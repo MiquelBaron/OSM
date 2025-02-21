@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Cocina</h1>
+    <div class="row">
+        <!-- Columna de pedidos pendientes -->
+        <div class="col-md-6">
+            <h2>Pedidos Pendientes</h2>
+            {% for pedido in pedidos %}
+                {% if pedido.status == 'P' %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pedido.name }}</h5>
+                        <p class="card-text">
+                            <strong>Hamburguesa:</strong> {{ pedido.burger.name }}<br>
+                            <strong>Cantidad:</strong> {{ pedido.amount }}<br>
+                            {% if pedido.notes %}
+                            <strong>Notas:</strong>
+                            <span class="notas-destacadas">{{ pedido.notes }}</span><br>
+                            {% endif %}
+                            <strong>Fecha:</strong> {{ pedido.date }}
+                        </p>
+                        <a href="{% url 'progreso' pedido.id %}" class="btn btn-warning">Marcar como En Progreso</a>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Columna de pedidos en progreso -->
+        <div class="col-md-6">
+            <h2>Pedidos en Progreso</h2>
+            {% for pedido in pedidos %}
+                {% if pedido.status == 'I' %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pedido.name }}</h5>
+                        <p class="card-text">
+                            <strong>Hamburguesa:</strong> {{ pedido.burger.name }}<br>
+                            <strong>Cantidad:</strong> {{ pedido.amount }}<br>
+                            <strong>Notas:</strong> {{ pedido.notes }}<br>
+                            <strong>Fecha:</strong> {{ pedido.date }}
+                        </p>
+                        <a href="{% url 'listo' pedido.id %}" class="btn btn-success">Marcar como Listo</a>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+    <style>
+    .notas-destacadas {
+        background-color: #fff3cd; /* Fondo amarillo claro */
+        padding: 5px 10px; /* Espaciado interno */
+        border: 1px solid #ffeeba; /* Borde amarillo */
+        border-radius: 5px; /* Bordes redondeados */
+        font-size: 1.1em; /* Tamaño de fuente más grande */
+        font-weight: bold; /* Texto en negrita */
+        color: #856404; /* Color de texto oscuro */
+    }
+</style>
+{% endblock %}

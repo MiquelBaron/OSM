@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Nuevo Pedido</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Campo para el nombre del pedido -->
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Nombre del Pedido</label>
+            <input type="text" class="form-control" id="id_name" name="name" required>
+        </div>
+
+        <!-- Campo para mostrar la hamburguesa seleccionada -->
+        <div class="mb-3">
+            <label for="selected_burger" class="form-label">Hamburguesa Seleccionada</label>
+            <input type="text" class="form-control" id="selected_burger" name="selected_burger" readonly>
+        </div>
+
+        <!-- Campo para seleccionar la hamburguesa -->
+        <div class="mb-3">
+            <label class="form-label">Selecciona una Hamburguesa</label>
+            <div class="row">
+                {% for burger in form.burger.field.queryset %}
+                <div class="col-md-4 mb-3">
+                    <label for="burger_{{ burger.id }}" class="card-label">
+                        <input type="radio" name="burger" value="{{ burger.id }}" id="burger_{{ burger.id }}" required
+                               onchange="document.getElementById('selected_burger').value = '{{ burger.name }}'">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ burger.name }}</h5>
+                                <p class="card-text">{{ burger.description }}</p>
+                                <p class="card-text"><strong>{{ burger.price }}€</strong></p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Campo para la cantidad -->
+        <div class="mb-3">
+            <label for="id_amount" class="form-label">Cantidad</label>
+            <input type="number" class="form-control" id="id_amount" name="amount" min="1" value="1" required>
+        </div>
+
+        <!-- Campo para las notas -->
+        <div class="mb-3">
+            <label for="id_notes" class="form-label">Notas</label>
+            <textarea class="form-control" id="id_notes" name="notes" rows="3"></textarea>
+        </div>
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit" class="btn btn-primary">Crear Pedido</button>
+    </form>
+</div>
+
+<style>
+    /* Estilos para hacer que toda la tarjeta sea clickeable */
+    .card-label {
+        display: block;
+        cursor: pointer;
+    }
+    .card-label input[type="radio"] {
+        display: none; /* Ocultar el radio button */
+    }
+    .card-label .card {
+        transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
+    }
+    /* Estilo cuando el radio button está seleccionado */
+    .card-label input[type="radio"]:checked + .card {
+        border: 2px solid #007bff; /* Borde azul */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+        transform: scale(1.05); /* Efecto de escala */
+    }
+    /* Estilo al pasar el mouse sobre la tarjeta */
+    .card-label:hover .card {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>
+{% endblock %}

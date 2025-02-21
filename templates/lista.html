@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Pedidos preparados</h1>
+    <div class="row">
+        {% for pedido in pedidos %}
+            {% if pedido.status == 'R' %}
+        <div class="col-md-4 mb-3">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pedido.name }}</h5>
+                    <p class="card-text">
+                        <strong>Hamburguesa:</strong> {{ pedido.burger.name }}<br>
+                        <strong>Cantidad:</strong> {{ pedido.amount }}<br>
+                        <strong>Notas:</strong> {{ pedido.notes }}<br>
+                        <strong>Estado:</strong> {{ pedido.get_status_display }}<br>
+                        <strong>Fecha:</strong> {{ pedido.date }}
+                    </p>
+                    <!-- Botón para marcar como entregado -->
+                    <a href="{% url 'marcar' pedido.id %}" class="btn btn-success">Marcar como Entregado</a>
+                    <!-- Botón para modificar -->
+                    <a href="{% url 'modificar' pedido.id %}" class="btn btn-warning">Modificar</a>
+                    <!-- Botón para eliminar -->
+                    <a href="{% url 'eliminar' pedido.id %}" class="btn btn-danger">Eliminar</a>
+                </div>
+            </div>
+        </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

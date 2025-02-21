@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <!-- Sección Superior: Métricas -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1>Análisis de Ventas</h1>
+            <div class="row">
+                <!-- Total Recaudado del Día -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total del Día</h5>
+                            <p class="card-text">{{ total_dia }}€</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Total Recaudado del Mes -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total del Mes</h5>
+                            <p class="card-text">{{ total_mes }}€</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Total Histórico Recaudado -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Histórico</h5>
+                            <p class="card-text">{{ total_historico }}€</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hamburguesa Más Pedida -->
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Hamburguesa Más Pedida</h5>
+                            <p class="card-text">
+                                {% if hamburguesa_mas_pedida %}
+                                    {{ hamburguesa_mas_pedida.name }} ({{ hamburguesa_mas_pedida.total_pedidos }} pedidos)
+                                {% else %}
+                                    No hay datos
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Otras Características Relevantes -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Otras Estadísticas</h5>
+                            <p class="card-text">
+                                <strong>Pedido Más Grande:</strong>
+                                {% if pedido_mas_grande %}
+                                    {{ pedido_mas_grande.name }} ({{ pedido_mas_grande.amount }} unidades)
+                                {% else %}
+                                    No hay datos
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Inferior: Hamburguesas Entregadas -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Hamburguesas Entregadas</h2>
+            <div class="row">
+                {% for pedido in pedidos %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pedido.name }}</h5>
+                            <p class="card-text">
+                                <strong>Hamburguesa:</strong> {{ pedido.burger.name }}<br>
+                                <strong>Cantidad:</strong> {{ pedido.amount }}<br>
+                                <strong>Notas:</strong>
+                                <div class="alert alert-warning" role="alert">
+                                    {{ pedido.notes }}
+                                </div>
+                                <strong>Fecha:</strong> {{ pedido.date }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
